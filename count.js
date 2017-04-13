@@ -25,27 +25,50 @@ var k = r * pi; //kerülete
 var speed = 0;
 var speedh = 0;
 
+var difz = 0;
+var currtimez = 0;
+var dz;
+
+function time(){
+
+d = new Date();
+currtime = d.getTime();
+dif = currtime - oldtime;
+oldtime = currtime;
+
+}
+
+function timez(){
+dz = new Date();
+currtimez = dz.getTime();
+difz = currtimez - oldtime;
+}
+
 function callzero(){
 setInterval(zero, 3000);
 }
 
 function zero(){
-	if(dif > 2000){
-		speedh = 0;
-		document.getElementById("digits").innerHTML = "<img src='0.png' width='" + wd + "'> <img src='0.png' width='" + wd + "'>";
-	}
+timez();
+
+if(difz > 2000){
+speedh = 0;
+document.getElementById("digits").innerHTML = "<img src='https://raw.githubusercontent.com/Dezilator/speedometer/master/0.png' width='" + wd + "'> <img src='https://raw.githubusercontent.com/Dezilator/speedometer/master/0.png' width='" + wd + "'>";
+}
 }
 
 //feldolgozza a jelet:
 function sign() {
 	
-	d = new Date();
-	currtime = d.getTime();
-	
+
 	clck = clck+1;
 	
-	dif = currtime - oldtime;
-	oldtime = currtime;
+	time();
+	
+	if(clck > 2){
+	callzero();
+	}
+
 	
 	//átváltás km/h-ba + feldarabolás számjegyekké:
 	difsec = 1000/dif;
