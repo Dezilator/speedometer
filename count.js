@@ -2,10 +2,18 @@
 
 
 //ablak méretei (és azok %-os csökkentése):
-var w = window.innerWidth;
-var h = window.innerHeight;
-var wd = 0.3*w;
-var hd = 0.3*h;
+var w;
+var h;
+
+function dimension(){
+	
+	w = window.innerWidth;
+	h = window.innerHeight;
+
+}
+
+var wd = 0.1*w;
+var hd = 0.1*h;
 
 //document.getElementById("digits").innerHTML = "<img src='digit.png' width='" + wd + "'>"+&nbsp+"<img src='digit.png' width='" + wd + "'>";
 
@@ -21,9 +29,10 @@ var clck = 0;
 var dif; //előbbi és jelenlegi különbsége
 var pi = 3.1415;
 var r = 0.35; //kerék sugara
-var k = r * pi; //kerülete
+var k = 2 * r * pi; //kerülete
 var speed = 0;
 var speedh = 0;
+var speedhs;
 
 var difz = 0;
 var currtimez = 0;
@@ -43,6 +52,88 @@ dz = new Date();
 currtimez = dz.getTime();
 difz = currtimez - oldtime;
 }
+
+//átlag számítás:
+
+function callavgtimer(){
+	
+	setInterval(avg, 500);
+	
+}
+
+var speeds = [];
+var sLen;
+var avg;
+
+function avg(){
+	
+	if(speedh > 0){
+	speeds.push(speedh);
+	
+	
+	sLen = speeds.length;
+	
+	var i;
+	var avg1 = 0;
+	avg = 0;
+	for(i = 0; i < sLen; i++){
+		
+		avg1 = avg1 + Number(speeds[i]);
+		avg = Math.round(avg1/sLen);
+		
+	}
+	
+	document.getElementById("debug2").innerHTML = avg;
+	
+	draw();
+	}
+	
+}
+
+//grafikon:
+
+
+
+var sLeno = 0;
+var avgo = 0;
+var speedho = 0;
+
+function draw(){
+	
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	if(canvas.width == 600){
+		canvas.width = w*0.8;
+	}
+	
+	if(avgo == 0){
+	ctx.moveTo(100, Number(100-avgo));
+	}
+	
+	//átlag:
+	ctx.beginPath();
+	ctx.strokeStyle="#000000";
+	ctx.moveTo(sLeno, Number(100-avgo));
+	ctx.lineTo(Number(1*sLen), Number(100-avg));
+	ctx.stroke();
+	
+
+		
+	//pillanatnyi sebesség:
+	ctx.beginPath()
+	ctx.strokeStyle="#FF0000";
+	ctx.moveTo(sLeno, Number(100-speedho));
+	ctx.lineTo(Number(1*sLen), Number(100-speedh));
+	
+	ctx.stroke();
+
+	
+	sLeno = 1*sLen;
+	avgo = avg;
+	speedho = speedh;
+}
+
+//nullázás:
 
 function callzero(){
 setInterval(zero, 3000);
@@ -65,8 +156,9 @@ function sign() {
 	
 	time();
 	
-	if(clck > 2){
+	if(clck == 2){
 	callzero();
+	callavgtimer();
 	}
 
 	
@@ -74,7 +166,7 @@ function sign() {
 	difsec = 1000/dif;
 	speed = k*difsec;
 	speedh = Math.round(speed*3.6);
-	var speedhs = speedh.toString();
+	speedhs = speedh.toString();
 	var spl = speedhs.split("");
 	
 	//ha csak egy számjegy lenne:
