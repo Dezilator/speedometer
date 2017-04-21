@@ -25,8 +25,9 @@ window.onclick = sign;
 var d; //newDate
 var oldtime = 0; //az előbbi idő átadva ide
 var currtime = 0; //jelenlegi idő
+var dif; //előbbi és jelenlegi idő különbsége
+
 var clck = 0; 
-var dif; //előbbi és jelenlegi különbsége
 var pi = 3.1415;
 var r = 0.35; //kerék sugara(méterben)
 var k = 2 * r * pi; //kerülete (méterben)
