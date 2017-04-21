@@ -28,8 +28,8 @@ var currtime = 0; //jelenlegi idő
 var clck = 0; 
 var dif; //előbbi és jelenlegi különbsége
 var pi = 3.1415;
-var r = 0.35; //kerék sugara
-var k = 2 * r * pi; //kerülete
+var r = 0.35; //kerék sugara(méterben)
+var k = 2 * r * pi; //kerülete (méterben)
 var speed = 0;
 var speedh = 0;
 var speedhs;
@@ -64,6 +64,7 @@ function callavgtimer(){
 var speeds = [];
 var sLen;
 var avg;
+var avg1 = 0;
 
 function avg(){
 	
@@ -72,21 +73,19 @@ function avg(){
 	
 	
 	sLen = speeds.length;
-	
-	var i;
-	var avg1 = 0;
+	var sLen2 = sLen-1;
 	avg = 0;
-	for(i = 0; i < sLen; i++){
-		
-		avg1 = avg1 + Number(speeds[i]);
-		avg = Math.round(avg1/sLen);
+	avg1 = avg1 + Number(speeds[sLen2]);
+	avg = Math.round(avg1/sLen);
+	document.getElementById("debug0").innerHTML += speeds[sLen2]+"<br>";
 		
 	}
 	
-	document.getElementById("debug2").innerHTML = avg;
+	document.getElementById("debug2").innerHTML = "Átlag: "+avg+" km/h";
 	
+
 	draw();
-	}
+	
 	
 }
 
@@ -106,15 +105,17 @@ function draw(){
 		canvas.width = w*0.8;
 	}
 	
-	if(avgo == 0){
-	ctx.moveTo(100, Number(100-avgo));
-	}
+	/*if(avgo == 0){
+	ctx.moveTo(0, 0);
+	ctx.lineTo(Number(1*sLen), Number(100-avg));
+
+	}else{*/
 	
 	//átlag:
 	ctx.beginPath();
 	ctx.strokeStyle="#000000";
-	ctx.moveTo(sLeno, Number(100-avgo));
-	ctx.lineTo(Number(1*sLen), Number(100-avg));
+	ctx.moveTo(sLeno, Number(canvas.height-avgo));
+	ctx.lineTo(Number(1*sLen), Number(canvas.height-avg));
 	ctx.stroke();
 	
 
@@ -122,11 +123,11 @@ function draw(){
 	//pillanatnyi sebesség:
 	ctx.beginPath()
 	ctx.strokeStyle="#FF0000";
-	ctx.moveTo(sLeno, Number(100-speedho));
-	ctx.lineTo(Number(1*sLen), Number(100-speedh));
+	ctx.moveTo(sLeno, Number(canvas.height-speedho));
+	ctx.lineTo(Number(1*sLen), Number(canvas.height-speedh));
 	
 	ctx.stroke();
-
+	
 	
 	sLeno = 1*sLen;
 	avgo = avg;
@@ -148,11 +149,15 @@ document.getElementById("digits").innerHTML = "<img src='https://raw.githubuserc
 }
 }
 
+
+var dist = 0;
+
 //feldolgozza a jelet:
 function sign() {
 	
 
 	clck = clck+1;
+	dist = Math.round(dist+k);
 	
 	time();
 	
@@ -182,6 +187,7 @@ function sign() {
 	
     
 	document.getElementById("debug1").innerHTML = dif;
+	document.getElementById("debug3").innerHTML = "Megtett táv: "+dist+" m";
 
 	
 	
